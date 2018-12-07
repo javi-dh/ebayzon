@@ -15,6 +15,18 @@
       <li class="nav-item">
         <a class="nav-link" href="/colors">Colors</a>
       </li>
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" id="drop-categories" role="button" data-toggle="dropdown">
+          Categories
+        </a>
+        <div class="dropdown-menu" aria-labelledby="drop-categories">
+          @forelse ($categories as $category)
+            <a class="dropdown-item" href="#">{{ $category->name }}</a>
+          @empty
+
+          @endforelse
+        </div>
+      </li>
     </ul>
     <form class="form-inline my-2 my-lg-0">
       <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
