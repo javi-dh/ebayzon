@@ -1,4 +1,4 @@
-@extends('base')
+@extends('template.base')
 
 @section('title', 'Listado de colores')
 
@@ -17,7 +17,7 @@
 					@forelse ($oneColor->products as $product)
 						<li>{{ $product->name }}</li>
 					@empty
-						<li>Sin productos relaciondos</li>
+						<li>Sin productos relacionados</li>
 					@endforelse
 					</ul>
 				</td>

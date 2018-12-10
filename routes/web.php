@@ -12,17 +12,21 @@ use App\Brand;
 |
 */
 
-// Route::get('/brands', function () {
-// 	$brands = \App\Brand::all();
-//    return view('brands')->with(compact('brands'));
-// });
-//
-// Route::get('/colors', function () {
-// 	$colors = \App\Color::all();
-//    return view('colors')->with(compact('colors'));
-// });
+Route::get('/brands', function () {
+	$brands = \App\Brand::all();
+   return view('brands')->with(compact('brands'));
+});
+
+Route::get('/colors', function () {
+	$colors = \App\Color::all();
+   return view('colors')->with(compact('colors'));
+});
 
 Route::get('/products/api', 'ProductsController@api');
+
+// Route::get('/productos', 'ProductsController@index');
+// Route::get('/productos/crear', 'ProductsController@create')->name('products.create');
+
 Route::resource('/products', 'ProductsController');
 // Route::get('/products', 'ProductsController@index');
 // Route::post('/products', 'ProductsController@store');

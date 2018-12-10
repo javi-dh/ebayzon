@@ -10,6 +10,9 @@
         <a class="nav-link" href="/products">Products <span class="sr-only">(current)</span></a>
       </li>
       <li class="nav-item">
+        <a class="nav-link" href="{{ route('products.create') }}">Crear producto</a>
+      </li>
+      <li class="nav-item">
         <a class="nav-link" href="/brands">Brands</a>
       </li>
       <li class="nav-item">

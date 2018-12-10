@@ -1,4 +1,4 @@
-@extends('base')
+@extends('template.base')
 
 @section('title', 'Listado de marcas')
 

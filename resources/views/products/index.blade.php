@@ -1,4 +1,4 @@
-@extends('base')
+@extends('template.base')
 
 @section('title', 'Listado de Productos')
 
@@ -10,12 +10,16 @@
 			<td>Price</td>
 			<td>Image</td>
 			<td>Colors</td>
-			<td>Category</td>
-			<td>Brand</td>
+			<td><a href="/products?orderBy=categories">Category</a></td>
+			<td><a href="/products?orderBy=brands">Brand</a></td>
 		</tr>
 		@forelse ($products as $oneProduct)
 			<tr>
-				<td>{{ $oneProduct->name }}</td>
+				<td>
+					<a href="{{ route('products.show', $oneProduct->id) }}">
+						{{ $oneProduct->name }}
+					</a>
+				</td>
 				<td><b>$</b>{{ $oneProduct->price }}</td>
 				<td><img src="{{ $oneProduct->image }}" width="100"></td>
 				<td>
@@ -27,8 +31,8 @@
 					@endforelse
 					</ul>
 				</td>
-				<td>{{ $oneProduct->category->name }}</td>
-				<td>{{ $oneProduct->brand->name }}</td>
+				<td>{{ $oneProduct->category->name ?? 'No tiene categoría' }}</td>
+				<td>{{ $oneProduct->brand->name ?? 'No tiene marca' }}</td>
 			</tr>
 		@empty
 
