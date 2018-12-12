@@ -12,7 +12,7 @@
 		@endforelse
 	</ul> --}}
 
-	<form action="/products" method="post">
+	<form action="/products" method="post" enctype="multipart/form-data">
 	{{-- <form action="{{ route('products.store') }}" method="post"> --}}
 		@csrf
 		<div class="row">
@@ -83,6 +83,22 @@
 					<span class="invalid-feedback">
 						{{ $errors->has('category_id') ? $errors->first('category_id') : null}}
 					</span>
+				</div>
+			</div>
+
+			<div class="col-6">
+				<div class="form-group">
+					<label for="category_id">Subí una imagen:</label>
+					<div class="custom-file">
+					   <input type="file"  id="image" name="image"
+							class="custom-file-input {{ $errors->has('image') ? 'is-invalid' : null }}"
+						>
+					   <label class="custom-file-label" for="image">Elegí una imagen</label>
+
+						<span class="invalid-feedback">
+							{{ $errors->has('image') ? $errors->first('image') : null}}
+						</span>
+					 </div>
 				</div>
 			</div>
 		</div>

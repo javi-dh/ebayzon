@@ -35,3 +35,7 @@ Route::resource('/products', 'ProductsController');
 // Route::put('/products/{id}', 'ProductsController@update');
 // Route::delete('/products/{id}', 'ProductsController@destroy');
 // Route::get('/products/{id}/edit', 'ProductsController@edit');
+
+Auth::routes();
+
+Route::get('/home', 'HomeController@index')->name('home');

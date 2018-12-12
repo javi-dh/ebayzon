@@ -4,8 +4,9 @@
 
 @section('content')
 	<h2>Editando: {{ $product->name }}</h2>
+	<img src="{{ Storage::url('products/' . $product->image) }}" width="200">
 
-	<form action="{{ route('products.update', $product->id) }}" method="post">
+	<form action="{{ route('products.update', $product->id) }}" method="post" enctype="multipart/form-data">
 		@csrf
 		{{ method_field('PUT') }}
 		<div class="row">
@@ -78,7 +79,24 @@
 					</span>
 				</div>
 			</div>
+
+			<div class="col-6">
+				<div class="form-group">
+					<label for="category_id">Subí una imagen:</label>
+					<div class="custom-file">
+					   <input type="file"  id="image" name="image"
+							class="custom-file-input {{ $errors->has('image') ? 'is-invalid' : null }}"
+						>
+					   <label class="custom-file-label" for="image">Elegí una imagen</label>
+
+						<span class="invalid-feedback">
+							{{ $errors->has('image') ? $errors->first('image') : null}}
+						</span>
+					 </div>
+				</div>
+			</div>
 		</div>
+
 
 		<button type="submit" class="btn btn-success">Save product</button>
 	</form>

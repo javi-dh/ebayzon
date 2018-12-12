@@ -17,7 +17,7 @@ class CreateProductsTable extends Migration
             $table->increments('id');
             $table->string('name', 100);
             $table->decimal('price', 8, 2); // 999.999.99
-            $table->string('image', 100)->nullable()->default('image.jpg');
+            $table->string('image', 100)->nullable()->default('default.png');
             $table->timestamps();
         });
     }

@@ -21,7 +21,7 @@
 					</a>
 				</td>
 				<td><b>$</b>{{ $oneProduct->price }}</td>
-				<td><img src="{{ $oneProduct->image }}" width="100"></td>
+				<td><img src="{{ Storage::url('products/' . $oneProduct->image) }}" width="100"></td>
 				<td>
 					<ul>
 					@forelse ($oneProduct->colors as $color)
@@ -38,4 +38,6 @@
 
 		@endforelse
 	</table>
+
+	{{ $products->links() }}
 @endsection

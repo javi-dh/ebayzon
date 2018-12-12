@@ -3,18 +3,53 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+
+use App\Http\Requests\ProductRequest;
 use App\Product;
 
 class ProductsController extends Controller
 {
+	public function storeAndUpdate($request, $product)
+	{
+		$product->name = $request->input('name');
+		$product->price = $request->input('price');
+		$product->category_id = $request->input('category_id');
+		$product->brand_id = $request->input('brand_id');
+
+		// Traemos todo el objeto de imagen
+		$productImage = $request->file('image');
+
+		// Armo un nombre único para este archivo
+		$imageName = uniqid("product_img_") . "." . $productImage->extension();
+
+		// Subo el archivo de imagen
+		$productImage->storePubliclyAs("public/products", $imageName);
+
+		// Lo guardamos en base de datos
+		$product->image = $imageName;
+		$product->save();
+	}
+
 	/**
 	* Display a listing of the resource.
 	*
 	* @return \Illuminate\Http\Response
 	*/
-	public function index()
+	public function index(Request $request)
 	{
-		$products = Product::all();
+		switch ($request->orderBy) {
+			case 'categories':
+				$order = 'category_id';
+				break;
+			case 'brands':
+				$order = 'brand_id';
+				break;
+			default:
+				$order = 'price';
+				break;
+		}
+		$products = Product::orderBy($order)->paginate(5);
+
 		return view('products.index')->with(compact('products'));
 	}
 
@@ -37,22 +72,11 @@ class ProductsController extends Controller
 	* @param  \Illuminate\Http\Request  $request
 	* @return \Illuminate\Http\Response
 	*/
-	public function store(Request $request)
+	public function store(ProductRequest $request)
 	{
-		$request->validate([
-			'name' => 'required | string',
-			'price' => 'required | numeric | min:10 | max:999.99',
-			'category_id' => 'required | integer',
-			'brand_id' => 'required | integer'
-		], [
-			'required' => 'El campo es obligatorio',
-			'name.string' => 'El campo nombre solo admite letras',
-			'price.numeric' => 'El campo precio solo admite números',
-			'price.min' => 'El precio mínimo es 10',
-			'price.max' => 'El precio máximo es 999.99',
-		]);
+		$product = new Product;
 
-		Product::create($request->all());
+		$this->storeAndUpdate($request, $product);
 
 		return redirect('/products');
 	}
@@ -92,28 +116,11 @@ class ProductsController extends Controller
 	* @param  int  $id
 	* @return \Illuminate\Http\Response
 	*/
-	public function update(Request $request, $id)
+	public function update(ProductRequest $request, $id)
 	{
-		$request->validate([
-			'name' => 'required | string',
-			'price' => 'required | numeric | min:10 | max:999.999.99',
-			'category_id' => 'required | integer',
-			'brand_id' => 'required | integer'
-		], [
-			'required' => 'El campo es obligatorio',
-			'name.string' => 'El campo nombre solo admite letras',
-			'price.numeric' => 'El campo precio solo admite números',
-			'price.min' => 'El precio mínimo es 10',
-			'price.max' => 'El precio máximo es 999.999.99',
-		]);
-
 		$product = Product::find($id);
 
-		$product->name = $request->input('name');
-		$product->price = $request->input('price');
-		$product->brand_id = $request->input('brand_id');
-		$product->category_id = $request->input('category_id');
-		$product->save();
+		$this->storeAndUpdate($request, $product);
 
 		return redirect()->route('products.index');
 	}
@@ -131,9 +138,10 @@ class ProductsController extends Controller
 		return redirect('/products');
 	}
 
-  public function api()
-  {
-    $products = Product::all();
-    return $products;
-  }
+	public function api()
+	{
+		$products = Product::all();
+		return $products;
+	}
+
 }

@@ -14,13 +14,13 @@
 		</tr>
 		<tr>
 			<td><b>$</b>{{ $product->price }}</td>
-			<td><img src="{{ $product->image }}" width="100"></td>
+			<td><img src="{{ Storage::url('products/' . $product->image) }}" width="100"></td>
 			<td>
 				<ul>
 				@forelse ($product->colors as $color)
 					<li>{{ $color->name }}</li>
 				@empty
-					<li>Sin colores relaciondos</li>
+					<li>Sin colores relacionados</li>
 				@endforelse
 				</ul>
 			</td>
@@ -34,6 +34,13 @@
 	<form action="/products/{{ $product->id }}" method="post" style="display: inline-block;">
 		@csrf
 		{{ method_field('DELETE') }}
-		<button type="submit" class="btn btn-danger">Delete</button>
+		<button id="delete" type="submit" class="btn btn-danger">Delete</button>
 	</form>
+
+	<script>
+		let btn = document.querySelector('#delete');
+		btn.addEventListener('click', function () {
+			window.alert('¿Seguro querés borrar el producto {{ $product->name }}?');
+		});
+	</script>
 @endsection
