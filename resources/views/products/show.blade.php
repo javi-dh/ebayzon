@@ -3,6 +3,11 @@
 @section('title', 'Detalle del Producto')
 
 @section('content')
+	@if ( session('alert') )
+		<div class="alert alert-danger">
+			{{ session('alert') }}
+		</div>
+	@endif
 	<h2>{{ $product->name }}</h2>
 	<table class="table">
 		<tr>
@@ -28,14 +33,19 @@
 			<td>{{ $product->brand->name ?? 'No tiene marca' }}</td>
 		</tr>
 	</table>
-	<a href="{{ route('products.edit', $product->id) }}" class="btn btn-warning">Edit</a>
-	{{-- <a href="/products/{{ $product->id }}/edit" class="btn btn-warning">Edit</a> --}}
 
-	<form action="/products/{{ $product->id }}" method="post" style="display: inline-block;">
-		@csrf
-		{{ method_field('DELETE') }}
-		<button id="delete" type="submit" class="btn btn-danger">Delete</button>
-	</form>
+	@auth
+		@if ($product->user_id == Auth::user()->id )
+			<a href="{{ route('products.edit', $product->id) }}" class="btn btn-warning">Edit</a>
+
+			<form action="/products/{{ $product->id }}" method="post" style="display: inline-block;">
+				@csrf
+				{{ method_field('DELETE') }}
+				<button id="delete" type="submit" class="btn btn-danger">Delete</button>
+			</form>
+		@endif
+	@endauth
+
 
 	<script>
 		let btn = document.querySelector('#delete');

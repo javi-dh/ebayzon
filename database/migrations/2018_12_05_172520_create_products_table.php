@@ -17,6 +17,8 @@ class CreateProductsTable extends Migration
             $table->increments('id');
             $table->string('name', 100);
             $table->decimal('price', 8, 2); // 999.999.99
+            $table->unsignedInteger('user_id')->nullable();
+    			  $table->foreign('user_id')->references('id')->on('users');
             $table->string('image', 100)->nullable()->default('default.png');
             $table->timestamps();
         });

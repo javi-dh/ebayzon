@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-
+use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\ProductRequest;
 use App\Product;
 
@@ -27,6 +27,7 @@ class ProductsController extends Controller
 
 		// Lo guardamos en base de datos
 		$product->image = $imageName;
+		$product->user_id = Auth::user()->id;
 		$product->save();
 	}
 
@@ -102,11 +103,15 @@ class ProductsController extends Controller
 	*/
 	public function edit($id)
 	{
+		$user_id = Auth::user()->id;
 		$product = Product::find($id);
 		$brands = \App\Brand::all();
 		$categories = \App\Category::all();
 
-		return view('products.edit')->with(compact('product', 'brands', 'categories'));
+		if ($user_id == $product->user_id) {
+			return view('products.edit')->with(compact('product', 'brands', 'categories'));
+		}
+		return redirect('/products/' . $id)->with('alert', 'No podés editar un producto que no es tuyo');
 	}
 
 	/**

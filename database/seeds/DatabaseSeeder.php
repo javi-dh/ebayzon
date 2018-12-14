@@ -21,14 +21,14 @@ class DatabaseSeeder extends Seeder
 
 		// $categories = \App\Category::all();
 
-		factory(App\User::class)->times(150)->create();
-
-		$products = factory(App\Product::class)->times(10)->create();
+		$users = factory(App\User::class)->times(15)->create();
+		$products = factory(App\Product::class)->times(40)->create();
 		$brands = factory(App\Brand::class)->times(5)->create();
 		$categories = factory(App\Category::class)->times(5)->create();
 		$colors = factory(App\Color::class)->times(15)->create();
 
 		foreach ($products as $oneProduct) {
+			$oneProduct->user()->associate($users->random(1)->first()->id);
 			$oneProduct->brand()->associate($brands->random(1)->first()->id);
 			$oneProduct->category()->associate($categories->random(1)->first()->id);
 			$oneProduct->save();

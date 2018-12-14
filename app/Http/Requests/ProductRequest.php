@@ -25,7 +25,7 @@ class ProductRequest extends FormRequest
 	{
 		return [
 			'name' => 'required | string',
-			'price' => 'required | numeric | min:10 | max:999.99',
+			'price' => 'required | numeric|min:10|max:999.99',
 			'category_id' => 'required | integer',
 			'brand_id' => 'required | integer',
 			'image' => 'required | image',
